@@ -35,8 +35,9 @@ public class K8SDeploymentService {
      * @param imageUrl
      */
     public Deployment update(String nsName, String deployName, String imageUrl) {
+        String goalImageUrl = Base64Decoder.decodeStr(imageUrl);
         Deployment deployment = get(nsName, deployName);
-        deployment.getSpec().getTemplate().getSpec().getContainers().get(0).setImage(imageUrl);
+        deployment.getSpec().getTemplate().getSpec().getContainers().get(0).setImage(goalImageUrl);
         Deployment orReplace = client.apps().deployments().inNamespace(nsName).createOrReplace(deployment);
         return orReplace;
     }
@@ -50,6 +51,7 @@ public class K8SDeploymentService {
      * @return
      */
     public Deployment add(String nsName, String deployName, String imageUrl) {
+        String goalImageUrl = Base64Decoder.decodeStr(imageUrl);
         Deployment deployment = new DeploymentBuilder()
                 .withNewMetadata()
                 .withName(deployName)
@@ -63,7 +65,7 @@ public class K8SDeploymentService {
                 .withNewSpec()
                 .addNewContainer()
                 .withName(deployName)
-                .withImage(imageUrl)
+                .withImage(goalImageUrl)
                 .addNewPort()
                 .withContainerPort(8000)
                 .endPort()
