@@ -27,13 +27,13 @@ public class DeploymentController {
         return service.list(nsName);
     }
 
-    @GetMapping("/add/{deployName}/{nsName}/{imageUrl}")
-    public Deployment add(@PathVariable String deployName, @PathVariable String nsName, @PathVariable String imageUrl) {
-        return service.add(deployName, nsName, imageUrl);
+    @GetMapping("/add/{nsName}/{deployName}/{imageUrl}")
+    public Deployment add(@PathVariable String nsName, @PathVariable String deployName, @PathVariable String imageUrl) {
+        return service.add(nsName,deployName,  imageUrl);
     }
 
-    @GetMapping("/update/{deployName}/{nsName}/{imageUrl}")
-    public Deployment update(@PathVariable String deployName, @PathVariable String nsName, @PathVariable String imageUrl) {
-        return service.update(deployName, nsName, imageUrl);
+    @GetMapping("/update/{nsName}/{deployName}/{imageUrl}")
+    public Deployment update(@PathVariable String nsName, @PathVariable String deployName, @PathVariable String imageUrl) {
+        return service.update(nsName,deployName,  imageUrl);
     }
 }
