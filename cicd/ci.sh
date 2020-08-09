@@ -8,10 +8,10 @@ project_path=$(cd `dirname $0`; pwd)
 
 if [[ "$1" != "" ]]; then
   version=$1
-  hub=etc-member
+  hub=etc-group
 else
   version="${pre_version}-"`date +%Y%m%d%H`
-  hub=etc-member-dev
+  hub=etc-group-dev
 fi
 target_img=ccr.ccs.tencentyun.com/${hub}/${img_name}:${version}
 
