@@ -50,7 +50,6 @@ public class K8SDeploymentService {
      * @return
      */
     public Deployment add(String nsName, String deployName, String imageUrl) {
-        String goalImage = Base64Decoder.decodeStr(imageUrl);
         Deployment deployment = new DeploymentBuilder()
                 .withNewMetadata()
                 .withName(deployName)
@@ -64,7 +63,7 @@ public class K8SDeploymentService {
                 .withNewSpec()
                 .addNewContainer()
                 .withName(deployName)
-                .withImage(goalImage)
+                .withImage(imageUrl)
                 .addNewPort()
                 .withContainerPort(8000)
                 .endPort()
