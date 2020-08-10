@@ -1,6 +1,5 @@
 package com.windframework.cloud.devops.service;
 
-import cn.hutool.core.codec.Base64Decoder;
 import com.windframework.cloud.devops.CommonUtils;
 import io.fabric8.kubernetes.api.model.apps.Deployment;
 import io.fabric8.kubernetes.api.model.apps.DeploymentBuilder;
@@ -43,6 +42,12 @@ public class K8SDeploymentService {
         return orReplace;
     }
 
+
+    public Boolean delete(String nsName, String deployName) {
+      return   client.apps().deployments().inNamespace(nsName).withName(deployName).delete();
+    }
+
+
     /**
      * 添加Deployment
      *
@@ -56,6 +61,8 @@ public class K8SDeploymentService {
         Deployment deployment = new DeploymentBuilder()
                 .withNewMetadata()
                 .withName(deployName)
+                .addToLabels("k8s-app", deployName)
+                .addToLabels("qcloud-app", deployName)
                 .endMetadata()
                 .withNewSpec()
                 .withReplicas(1)
