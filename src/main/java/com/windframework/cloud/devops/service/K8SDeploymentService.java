@@ -1,6 +1,7 @@
 package com.windframework.cloud.devops.service;
 
 import cn.hutool.core.codec.Base64Decoder;
+import com.windframework.cloud.devops.CommonUtils;
 import io.fabric8.kubernetes.api.model.apps.Deployment;
 import io.fabric8.kubernetes.api.model.apps.DeploymentBuilder;
 import io.fabric8.kubernetes.api.model.apps.DeploymentList;
@@ -35,7 +36,7 @@ public class K8SDeploymentService {
      * @param imageUrl
      */
     public Deployment update(String nsName, String deployName, String imageUrl) {
-        String goalImageUrl = Base64Decoder.decodeStr(imageUrl);
+        String goalImageUrl = CommonUtils.base64DecodePlus(imageUrl);
         Deployment deployment = get(nsName, deployName);
         deployment.getSpec().getTemplate().getSpec().getContainers().get(0).setImage(goalImageUrl);
         Deployment orReplace = client.apps().deployments().inNamespace(nsName).createOrReplace(deployment);
@@ -51,7 +52,7 @@ public class K8SDeploymentService {
      * @return
      */
     public Deployment add(String nsName, String deployName, String imageUrl) {
-        String goalImageUrl = Base64Decoder.decodeStr(imageUrl);
+        String goalImageUrl = CommonUtils.base64DecodePlus(imageUrl);
         Deployment deployment = new DeploymentBuilder()
                 .withNewMetadata()
                 .withName(deployName)
@@ -60,20 +61,22 @@ public class K8SDeploymentService {
                 .withReplicas(1)
                 .withNewTemplate()
                 .withNewMetadata()
-                .addToLabels("app", deployName)
+                .addToLabels("k8s-app", deployName)
+                .addToLabels("qcloud-app", deployName)
                 .endMetadata()
                 .withNewSpec()
                 .addNewContainer()
                 .withName(deployName)
                 .withImage(goalImageUrl)
                 .addNewPort()
-                .withContainerPort(8000)
+                .withContainerPort(8080)
                 .endPort()
                 .endContainer()
                 .endSpec()
                 .endTemplate()
                 .withNewSelector()
-                .addToMatchLabels("app", deployName)
+                .addToMatchLabels("k8s-app", deployName)
+                .addToMatchLabels("qcloud-app", deployName)
                 .endSelector()
                 .endSpec()
                 .build();
