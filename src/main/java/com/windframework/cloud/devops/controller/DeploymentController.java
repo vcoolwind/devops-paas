@@ -37,7 +37,7 @@ public class DeploymentController {
         return service.update(nsName,deployName,  imageUrl);
     }
 
-    @GetMapping("/delete /{nsName}/{deployName}")
+    @GetMapping("/delete/{nsName}/{deployName}")
     public Boolean delete(@PathVariable String nsName, @PathVariable String deployName) {
         return service.delete(nsName,deployName);
     }
