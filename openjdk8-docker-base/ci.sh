@@ -15,20 +15,13 @@ else
 fi
 target_img=ccr.ccs.tencentyun.com/${hub}/${img_name}:${version}
 
-#prepare
-cd ${project_path}
-cp -f Dockerfile ../Dockerfile
-cp -f docker-startup.sh ../docker-startup.sh
+echo ${target_img}
 
-#jar package
-cd ..
-git pull
-mvn clean package -Dmaven.test.skip
+cd $project_path
 #docker builid
 docker build . -t ${target_img}
 rm Dockerfile docker-startup.sh
 #docker push
-cd $project_path
 docker login --username=100015048926 ccr.ccs.tencentyun.com -p Hub@etc2020
 docker push ${target_img}
 
