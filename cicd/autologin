@@ -1,6 +1,0 @@
-#!/usr/bin/expect
-#please install expect first: yum install -y expect
-spawn  docker login --username=100015048926 ccr.ccs.tencentyun.com
-expect "Password:"
-send "Hub@etc2020\n"
-interact
