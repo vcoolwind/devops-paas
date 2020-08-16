@@ -1,0 +1,87 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  creationTimestamp: "2020-08-09T10:10:42Z"
+  name: devops
+  namespace: devtools
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: devops
+rules:
+- apiGroups:
+  - '*'
+  resources:
+  - '*'
+  verbs:
+  - '*'
+- nonResourceURLs:
+  - '*'
+  verbs:
+  - '*'
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: devops
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: devops
+subjects:
+- kind: ServiceAccount
+  name: devops
+  namespace: devtools
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    k8s-app: devops
+    qcloud-app: devops
+  name: devops
+  namespace: devtools
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      k8s-app: devops
+      qcloud-app: devops
+  template:
+    metadata:
+      labels:
+        k8s-app: devops
+        qcloud-app: devops
+    spec:
+      containers:
+      - env:
+        - name: JVM_XMS
+          value: 512M
+        - name: JVM_XMX
+          value: 512M
+        - name: JVM_XMN
+          value: 168M
+        - name: JVM_MS
+          value: 128m
+        - name: JVM_MMS
+          value: 320m
+        - name: JVM_LOG_HOME
+          value: /logs
+        - name: SERVER_PORT
+          value: "8080"
+        - name: run_in_k8s
+          value: "true"
+        image: ccr.ccs.tencentyun.com/etc-group-dev/devops:1.0.0-2020081017
+        name: devops
+        resources:
+          limits:
+            cpu: 500m
+            memory: 1Gi
+          requests:
+            cpu: 250m
+            memory: 256Mi
+      imagePullSecrets:
+      - name: qcloudregistrykey
+      serviceAccount: devops
+      serviceAccountName: devops
