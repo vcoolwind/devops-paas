@@ -17,12 +17,9 @@ target_img=ccr.ccs.tencentyun.com/${hub}/${img_name}:${version}
 
 echo ${target_img}
 
-
 cd ${project_path}
 #docker builid
 docker build . -t ${target_img}
-rm Dockerfile docker-startup.sh
-#docker push
 docker login --username=100015048926 ccr.ccs.tencentyun.com -p Hub@etc2020
 docker push ${target_img}
 

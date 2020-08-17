@@ -4,7 +4,7 @@ MAINTAINER pader "yanfengking@163.com"
 VOLUME /logs
 RUN mkdir /opt/skywalking-apm-8.0.1/
 
-ADD skywalking-apm-8.0.1/agent /opt/skywalking-apm-8.0.1/agent
+ADD  skywalking-apm-8.0.1 /opt/skywalking-apm-8.0.1
 ADD CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo
 
 # set environment
@@ -28,11 +28,11 @@ ENV JAVA_OPTS="-Djava.security.egd=file:/dev/./urandom \
         -Xloggc:$JVM_LOG_HOME/gc.log \
         -XX:+HeapDumpOnOutOfMemoryError \
         -XX:HeapDumpPath=$JVM_LOG_HOME/heapdump.hprof \
-	-javaagent:/opt/skywalking-apm-8.0.1/agent/skywalking-agent.jar "
+        -javaagent:/opt/skywalking-apm-8.0.1/agent/skywalking-agent.jar "
 
-ENV SW_AGENT_COLLECTOR_BACKEND_SERVICES="skywalking8-oap.devops.svc:11800" \
-    SW_AGENT_NAME="YourServiceName" \
-    SW_AGENT_NAMESPACE="YourNaemSpace" 
+ENV SW_AGENT_NAMESPACE="default-namespace" \
+    SW_AGENT_NAME="Your_ApplicationName" \
+    SW_AGENT_COLLECTOR_BACKEND_SERVICES="skywalking8-oap.devtools.svc:11800"
 
 RUN set -x \
     && yum update -y \
