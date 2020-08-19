@@ -32,7 +32,8 @@ ENV JAVA_OPTS="-Djava.security.egd=file:/dev/./urandom \
 
 ENV SW_AGENT_NAMESPACE="default-namespace" \
     SW_AGENT_NAME="Your_ApplicationName" \
-    SW_AGENT_COLLECTOR_BACKEND_SERVICES="skywalking8-oap.devtools.svc:11800"
+    SW_AGENT_COLLECTOR_BACKEND_SERVICES="skywalking8-oap.devops.svc:11800" \
+    SW_AGENT_IGNORE_SUFFIX="actuator/health"
 
 RUN set -x \
     && yum update -y \

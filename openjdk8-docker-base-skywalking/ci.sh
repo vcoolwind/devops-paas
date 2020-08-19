@@ -1,18 +1,14 @@
 #!/bin/bash
-pre_version="1.0"
+pre_version="1.1"
 img_name="openjdk8-centos7-skywalking8"
 
 #-----do not change below content-----------------------
 origin_path=`pwd`
 project_path=$(cd `dirname $0`; pwd)
 
-if [[ "$1" != "" ]]; then
-  version=$1
-  hub=etc-group
-else
-  version="${pre_version}-"`date +%Y%m%d%H`
-  hub=etc-group-dev
-fi
+version="${pre_version}-"`date +%Y%m%d%H`
+hub=etc-group
+
 target_img=ccr.ccs.tencentyun.com/${hub}/${img_name}:${version}
 
 echo ${target_img}
